@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gemini Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="gemini-orbit"></div>
+    <h2>Activating API...</h2>
+  </div>
+  <div id="avatar-popup">
+    <img src="https://external-preview.redd.it/google-gemini-pro-api-available-through-ai-studio-v0-FJfyR710n5wu1VMO6EJEBezHIFtvYiTfMm5tsyjNQBg.jpg?auto=webp&s=66ffb8c51c3a5dd7bc1b5747deca4696f25b8092" alt="AI Avatar" />
+    <h2>Hello There..</h2>
+  </div>
+  <main class="app-wrapper" style="display: none;">
+    <header class="app-header">GenAI Chatbot</header>
+    <section class="chat-panel" id="chat-container">
+      <div class="message bot">👋 I'm GenAI Chatbot. Ask me anything.</div>
+    </section>
+    <footer class="input-panel">
+      <input type="text" id="user-input" placeholder="Type a message..." />
+      <button id="mic-btn">🎤</button>
+      <button id="send-btn">➤</button>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
