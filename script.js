@@ -1,10 +1,8 @@
-const API_KEY = "YOUR_GEMINI_API_KEY"; // Replace with your actual key
+const GEMINI_API_KEY = "ADD YOUR OWN API KEY"; // replace with your actual api key
 const chatContainer = document.getElementById("chat-container");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 const micBtn = document.getElementById("mic-btn");
-
-// Show loading, then welcome, then chatbot
 window.addEventListener("load", () => {
   const loading = document.getElementById("loading-screen");
   const avatar = document.getElementById("avatar-popup");
@@ -20,11 +18,9 @@ window.addEventListener("load", () => {
       avatar.style.opacity = "0";
       avatar.style.pointerEvents = "none";
       mainApp.style.display = "flex";
-    }, 2000); // avatar shown for 3 sec
-  }, 1500); // loading screen for 2.5 sec
+    }, 2000); 
+  }, 1500);
 });
-
-// Add message to chat
 function addMessage(text, sender, isHTML = false) {
   const msgDiv = document.createElement("div");
   msgDiv.classList.add("message", sender);
@@ -37,7 +33,6 @@ function addMessage(text, sender, isHTML = false) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Show typing animation
 function showTypingDots() {
   const dotsHTML = `
     <div class="message bot typing" id="typing">
@@ -48,26 +43,19 @@ function showTypingDots() {
   chatContainer.insertAdjacentHTML("beforeend", dotsHTML);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
-
-// Remove typing animation
 function removeTypingDots() {
   const typing = document.getElementById("typing");
   if (typing) typing.remove();
 }
-
-// Send button click handler
 sendBtn.addEventListener("click", async () => {
   const input = userInput.value.trim();
   if (!input) return;
-
   addMessage(input, "user");
-  userInput.value = "";
-
+  userInput.value = ""
   showTypingDots();
-
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,32 +64,25 @@ sendBtn.addEventListener("click", async () => {
         }),
       }
     );
-
     const data = await res.json();
     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ No response from Gemini.";
-
     removeTypingDots();
     addMessage(reply, "bot");
-
     const utter = new SpeechSynthesisUtterance(reply);
     speechSynthesis.speak(utter);
-
   } catch (err) {
     removeTypingDots();
-    addMessage("⚠️ Error: Could not reach Gemini API.", "bot");
+    addMessage("⚠️ Error: Could not reach API.", "bot");
     console.error(err);
   }
 });
-
-// 🎤 Voice input
 micBtn.addEventListener("click", () => {
   if (!("webkitSpeechRecognition" in window)) {
     alert("Speech recognition not supported in this browser.");
     return;
   }
-
   const recognition = new webkitSpeechRecognition();
-  recognition.lang = "en-US";
+  recognition.lang = "en-IN";
   recognition.continuous = false;
   recognition.interimResults = false;
 
@@ -109,10 +90,9 @@ micBtn.addEventListener("click", () => {
     const transcript = event.results[0][0].transcript;
     userInput.value = transcript;
   };
-
   recognition.onerror = (event) => {
     console.error("Speech recognition error:", event);
+    alert("Sorry I couldnot hear.. please try again.")
   };
-
   recognition.start();
 });
